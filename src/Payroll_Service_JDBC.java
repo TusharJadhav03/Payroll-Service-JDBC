@@ -1,10 +1,9 @@
 import java.sql.*;
-import java.util.List;
 
 public class Payroll_Service_JDBC {
 
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args){
 
         String url = "jdbc:mysql://localhost:3306/payroll_service";
         String username = "root";
@@ -13,10 +12,11 @@ public class Payroll_Service_JDBC {
         try {
             Connection con = DriverManager.getConnection(url, username, password);
             System.out.println("Successfully connected....");
-            String query = "SELECT * FROM employee_payroll";
+            String query = "UPDATE employee_payroll SET Basic_pay = 3000000 WHERE name = 'Tushar'";
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
+            stmt.executeUpdate(query);
+            System.out.println("Update data Successfully");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM employee_payroll");
             while (rs.next()){
                 System.out.println("Employee ID : "+rs.getInt(1));
                 System.out.println("Employee Name : "+rs.getString(2));
@@ -33,11 +33,13 @@ public class Payroll_Service_JDBC {
                 System.out.println("Net pay : "+rs.getDouble(13));
                 System.out.println();
             }
-            System.out.println("Read data Successfully");
             con.close();
+            throw new CustomException("Error found in process");
         }
-        catch (Exception e){
-            System.out.println(e);
+        catch (CustomException e){
+            System.out.println("Error found in process");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
 
