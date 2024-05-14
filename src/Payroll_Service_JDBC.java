@@ -12,9 +12,13 @@ public class Payroll_Service_JDBC {
         try {
             Connection con = DriverManager.getConnection(url, username, password);
             System.out.println("Successfully connected....");
-            String query = "UPDATE employee_payroll SET Basic_pay = 3000000 WHERE name = 'Tushar'";
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate(query);
+            String query = "UPDATE employee_payroll SET Basic_pay = ? WHERE name = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1,3000000);
+            stmt.setString(2,"Anjali");
+            stmt.executeUpdate();
+
+
             System.out.println("Update data Successfully");
             ResultSet rs = stmt.executeQuery("SELECT * FROM employee_payroll");
             while (rs.next()){
