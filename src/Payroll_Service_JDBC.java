@@ -12,15 +12,8 @@ public class Payroll_Service_JDBC {
         try {
             Connection con = DriverManager.getConnection(url, username, password);
             System.out.println("Successfully connected....");
-            String query = "UPDATE employee_payroll SET Basic_pay = ? WHERE name = ?";
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setInt(1,3000000);
-            stmt.setString(2,"Anjali");
-            stmt.executeUpdate();
-
-
-            System.out.println("Update data Successfully");
-            ResultSet rs = stmt.executeQuery("SELECT * FROM employee_payroll");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM employee_payroll WHERE start_date BETWEEN CAST('2024-01-03' AS DATE) AND DATE (NOW()) ");
             while (rs.next()){
                 System.out.println("Employee ID : "+rs.getInt(1));
                 System.out.println("Employee Name : "+rs.getString(2));
